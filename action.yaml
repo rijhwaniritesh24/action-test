@@ -28,16 +28,16 @@ runs:
       shell: bash
       run: ls -R
 
-    - name: Set GitHub Path
-      run: echo "$GITHUB_ACTION_PATH" >> $GITHUB_PATH
-      shell: bash
-      env:
-        GITHUB_ACTION_PATH: ${{ github.action_path }}
+    # - name: Set GitHub Path
+    #   run: echo "$GITHUB_ACTION_PATH" >> $GITHUB_PATH
+    #   shell: bash
+    #   env:
+    #     GITHUB_ACTION_PATH: ${{ github.action_path }}
       
     - name: Run Coverage Script
       uses: actions/github-script@v7
       with:
         script: |
-          console.log( github.action_path )
-          const script = require('${{ github.action_path }}/.github/script/script.js'); 
+          console.log(process.env.GITHUB_ACTION_PATH);
+          const script = require(`${process.env.GITHUB_ACTION_PATH}/.github/script/script.js`);
           console.log(script({ github, context }));
