@@ -24,30 +24,31 @@ jobs:
         run: ./gradlew build
 
   test:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
+    run:
+      using: "composite"
+      needs: build
+      steps:
 
-      - name: Checkout External Script Repository
-        uses: actions/checkout@v4
-        with:
-          repository: rijhwaniritesh24/action-test  # Change this to the actual repo
+        # - name: Checkout External Script Repository
+        #   uses: actions/checkout@v4
+        #   with:
+        #     repository: rijhwaniritesh24/action-test  # Change this to the actual repo
 
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+        - name: Checkout Repository
+          uses: actions/checkout@v4
 
-      - name: Grant execute permission for Gradle
-        run: chmod +x gradlew
+        - name: Grant execute permission for Gradle
+          run: chmod +x gradlew
 
-      - name: Run Tests and Generate Coverage Report
-        run: ./gradlew test jacocoTestReport
+        - name: Run Tests and Generate Coverage Report
+          run: ./gradlew test jacocoTestReport
 
-      - name: List of Dir
-        run: ls -R
+        - name: List of Dir
+          run: ls -R
 
-      - name: Run Coverage Script
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const script = require('../external-scripts/.github/script/script.js');
-            console.log(script({ github, context }));
+        - name: Run Coverage Script
+          uses: actions/github-script@v7
+          with:
+            script: |
+              const script = require('${{github.action_path}}}/.github/script/script.js');
+              console.log(script({ github, context }));
