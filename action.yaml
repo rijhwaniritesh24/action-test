@@ -1,71 +1,36 @@
-# name: Reusable Java CI Workflow
-# description: Runs Java tests and processes coverage reports.
+name: Reusable Java CI Workflow
+description: Runs Java tests and processes coverage reports.
 
-# on:
-#   workflow_call:
+on:
+  workflow_call:
 
-# runs:
-#   using: "composite"
-#   steps:
-#     - name: Checkout Repository
-#       uses: actions/checkout@v4
-
-#     - name: Grant Execute Permission for Gradle
-#       shell: bash
-#       run: |
-#         if [ -f ./gradlew ]; then
-#           chmod +x gradlew
-#         else
-#           echo "gradlew not found!"
-#           exit 1
-#         fi
-
-#     - name: Run Tests and Generate Coverage Report
-#       shell: bash
-#       run: ./gradlew test jacocoTestReport
-
-#     - name: List Directory Contents
-#       shell: bash
-#       run: ls -R
-
-#     - name: Run Coverage Script
-#       uses: actions/github-script@v7
-#       with:
-#         script: |
-#           const script = require('${{ github.action_path }}/script/script.js'); 
-#           console.log(script({ github, context }));
-
-name: 'Hello World'
-description: 'Greet someone'
-# inputs:
-#   who-to-greet:  # id of input
-#     description: 'Who to greet'
-#     required: true
-#     default: 'World'
-# outputs:
-#   random-number:
-#     description: "Random number"
-#     value: ${{ steps.random-number-generator.outputs.random-number }}
 runs:
   using: "composite"
   steps:
-    - name: Set Greeting
-      run: echo "Hello Ritesh"
+    # - name: Checkout Repository
+    #   uses: actions/checkout@v4
+
+    - name: Grant Execute Permission for Gradle
       shell: bash
+      run: |
+        if [ -f ./gradlew ]; then
+          chmod +x gradlew
+        else
+          echo "gradlew not found!"
+          exit 1
+        fi
 
-
-    - name: Random Number Generator
-      id: random-number-generator
-      run: echo "random-number=$(echo $RANDOM)" >> $GITHUB_OUTPUT
+    - name: Run Tests and Generate Coverage Report
       shell: bash
+      run: ./gradlew test jacocoTestReport
 
-    - name: Set GitHub Path
-      run: echo "$GITHUB_ACTION_PATH" >> $GITHUB_PATH
+    - name: List Directory Contents
       shell: bash
-      env:
-        GITHUB_ACTION_PATH: ${{ github.action_path }}
+      run: ls -R
 
-    - name: Run goodbye.sh
-      run: ./.github/script/test.js
-      shell: bash
-
+    - name: Run Coverage Script
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const script = require('${{ github.action_path }}/.github/script/script.js'); 
+          console.log(script({ github, context }));
