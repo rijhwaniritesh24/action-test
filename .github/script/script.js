@@ -21,7 +21,7 @@ function parseCSV(data) {
 
 module.exports = ({ github, context }) => {
     try {
-        const csvData = fs.readFileSync('build/reports/jacoco/test/jacocoTestReport.csv', 'utf8');
+        const csvData = fs.readFileSync('./build/reports/jacoco/test/jacocoTestReport.csv', 'utf8');
         const coverageTable = parseCSV(csvData);
         console.table(coverageTable);
         return coverageTable;
