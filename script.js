@@ -31,6 +31,3 @@ module.exports = ({ github, context }) => {
     }
 };
 
-// Usage in GitHub Actions script
-const script = require('./.github/script/script.js');
-console.log(script({ github, context }));
