@@ -1,33 +1,33 @@
 name: Reusable Java CI Workflow
-
-on:
-  workflow_call:
+description: Runs Java tests and processes coverage reports.
 
 runs:
   using: "composite"
   steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
 
-        - name: Checkout External Script Repository
-          uses: actions/checkout@v4
-          with:
-            repository: rijhwaniritesh24/action-test  # Change this to the actual repo
+    - name: Grant Execute Permission for Gradle
+      shell: bash
+      run: |
+        if [ -f ./gradlew ]; then
+          chmod +x gradlew
+        else
+          echo "gradlew not found!"
+          exit 1
+        fi
 
-        - name: Checkout Repository
-          uses: actions/checkout@v4
+    - name: Run Tests and Generate Coverage Report
+      shell: bash
+      run: ./gradlew test jacocoTestReport
 
-        - name: Grant execute permission for Gradle
-          run: chmod +x gradlew
+    - name: List Directory Contents
+      shell: bash
+      run: ls -R
 
-        - name: Run Tests and Generate Coverage Report
-          run: ./gradlew test jacocoTestReport
-
-        - name: List of Dir
-          run: ls -R
-
-        - name: Run Coverage Script
-          uses: actions/github-script@v7
-          with:
-            script: |
-              const script = require('${{github.action_path}}}/.github/script/script.js');
-              console.log(script({ github, context }));
-      
+    - name: Run Coverage Script
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const script = require('${{ github.action_path }}/script/script.js'); 
+          console.log(script({ github, context }));
