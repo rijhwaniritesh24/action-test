@@ -3,45 +3,23 @@ name: Reusable Java CI Workflow
 on:
   workflow_call:
 
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-      
-      - name: Grant execute permission for Gradle
-        run: chmod +x gradlew
-
-      - name: Build with Gradle
-        run: ./gradlew build
-
-  test:
-    run:
-      using: "composite"
-      needs: build
-      steps:
+runs:
+  using: "composite"
+  steps:
 
         # - name: Checkout External Script Repository
         #   uses: actions/checkout@v4
         #   with:
         #     repository: rijhwaniritesh24/action-test  # Change this to the actual repo
 
-        - name: Checkout Repository
-          uses: actions/checkout@v4
+        # - name: Checkout Repository
+        #   uses: actions/checkout@v4
 
-        - name: Grant execute permission for Gradle
-          run: chmod +x gradlew
+        # - name: Grant execute permission for Gradle
+        #   run: chmod +x gradlew
 
-        - name: Run Tests and Generate Coverage Report
-          run: ./gradlew test jacocoTestReport
+        # - name: Run Tests and Generate Coverage Report
+        #   run: ./gradlew test jacocoTestReport
 
         - name: List of Dir
           run: ls -R
@@ -52,3 +30,4 @@ jobs:
             script: |
               const script = require('${{github.action_path}}}/.github/script/script.js');
               console.log(script({ github, context }));
+      
