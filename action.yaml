@@ -32,6 +32,6 @@ runs:
       uses: actions/github-script@v7
       with:
         script: |
-            console.log("${{ github.action_path }}/script.js")
+          console.log("${{ github.action_path }}/script.js")
           const script = require('${{ github.action_path }}/script.js'); 
           console.log(script({ github, context }));
