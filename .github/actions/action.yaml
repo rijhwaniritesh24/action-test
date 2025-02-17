@@ -43,18 +43,18 @@
 #           console.log(script({ github, context }));
 
 
-
 name: Reusable Java CI Workflow
-
 on:
   workflow_call:
-
-
 jobs:
   test:
     runs-on: ubuntu-latest
     needs: build
     steps:
+
+      - name: Checkout External Script Repository
+        uses: actions/checkout@v4
+
       - name: Checkout External Script Repository
         uses: actions/checkout@v4
         with:
@@ -63,13 +63,10 @@ jobs:
 
       - name: Grant execute permission for Gradle
         run: chmod +x gradlew
-
       - name: Run Tests and Generate Coverage Report
         run: ./gradlew test jacocoTestReport
-
       - name: List of Dir
         run: ls -R
-
       - name: Run Coverage Script
         uses: actions/github-script@v7
         with:
