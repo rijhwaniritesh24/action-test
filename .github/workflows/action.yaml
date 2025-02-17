@@ -54,8 +54,9 @@ jobs:
       - name: Checkout External Script Repository
         uses: actions/checkout@v4
 
-      - name: Make Dir
-        run: mkdir external-repo
+      - name: Create directories
+        run: |
+          mkdir -p external-repo
 
       - name: Checkout External Script Repository
         uses: actions/checkout@v4
@@ -68,7 +69,7 @@ jobs:
 
       - name: Run Tests and Generate Coverage Report
         run: ./gradlew test jacocoTestReport
-        
+
       - name: List of Dir
         run: ls -R
       - name: Run Coverage Script
