@@ -54,6 +54,9 @@ jobs:
       - name: Checkout External Script Repository
         uses: actions/checkout@v4
 
+      - name: Make Dir
+        uses: mkdir external-repo
+
       - name: Checkout External Script Repository
         uses: actions/checkout@v4
         with:
