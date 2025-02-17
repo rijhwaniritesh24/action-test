@@ -1,0 +1,78 @@
+# name: Reusable Java CI Workflow
+# description: Runs Java tests and processes coverage reports.
+
+# on:
+#   workflow_call:
+
+# runs:
+#   using: "composite"
+#   steps:
+#     # - name: Checkout Repository
+#     #   uses: actions/checkout@v4
+
+#     - name: Grant Execute Permission for Gradle
+#       shell: bash
+#       run: |
+#         if [ -f ./gradlew ]; then
+#           chmod +x gradlew
+#         else
+#           echo "gradlew not found!"
+#           exit 1
+#         fi
+
+#     - name: Run Tests and Generate Coverage Report
+#       shell: bash
+#       run: ./gradlew test jacocoTestReport
+
+#     - name: List Directory Contents
+#       shell: bash
+#       run: ls -R
+
+#     # - name: Set GitHub Path
+#     #   run: echo "$GITHUB_ACTION_PATH" >> $GITHUB_PATH
+#     #   shell: bash
+#     #   env:
+#     #     GITHUB_ACTION_PATH: ${{ github.action_path }}
+      
+#     - name: Run Coverage Script
+#       uses: actions/github-script@v7
+#       with:
+#         script: |
+#           console.log(process.env.GITHUB_ACTION_PATH);
+#           const script = require(`${process.env.GITHUB_ACTION_PATH}/.github/script/script.js`);
+#           console.log(script({ github, context }));
+
+
+
+name: Reusable Java CI Workflow
+
+on:
+  workflow_call:
+
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout External Script Repository
+        uses: actions/checkout@v4
+        with:
+          repository: rijhwaniritesh24/action-test  # Change this to the actual repo
+          path: /external-repo
+
+      - name: Grant execute permission for Gradle
+        run: chmod +x gradlew
+
+      - name: Run Tests and Generate Coverage Report
+        run: ./gradlew test jacocoTestReport
+
+      - name: List of Dir
+        run: ls -R
+
+      - name: Run Coverage Script
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const script = require('./external-repo/.github/script/script.js');
+            console.log(script({ github, context }));
