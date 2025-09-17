@@ -10,7 +10,7 @@ erDiagram
 
     LOAN_PROVIDER {
         uuid id PK
-         ... other_fields ...
+         . other_fields .
     }
 
     EXPERIMENT_LOAN_PROVIDER {
@@ -21,7 +21,7 @@ erDiagram
     LOAN {
         uuid id PK
         uuid experiment_id FK
-        ...other_fields ...
+        . other_fields .
     }
 
     EXPERIMENT ||--o{ EXPERIMENT_LOAN_PROVIDER : has
