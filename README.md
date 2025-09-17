@@ -10,7 +10,7 @@ erDiagram
 
     LOAN_PROVIDER {
         uuid id PK
-         . other_fields .
+        . other_fields .
     }
 
     EXPERIMENT_LOAN_PROVIDER {
